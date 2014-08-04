@@ -1,0 +1,9 @@
+---
+
+- name: restart memcached
+  service: name=memcached state=restarted
+
+- name: restart swift
+  shell: chown -R swift:swift /etc/swift && swift-init restart proxy
+  register: command_result
+  failed_when: "'Error' in command_result.stdout"

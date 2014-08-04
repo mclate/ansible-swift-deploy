@@ -1,0 +1,52 @@
+---
+# Storage-specific tasks
+
+- name: create storage cache folder
+  shell: mkdir /var/cache/swift && chown swift:swift /var/cache/swift
+  args: 
+    creates: /var/cache/swift
+
+- name: Install swift-container
+  apt: name=swift-container state=present
+
+- name: Install swift-object
+  apt: name=swift-object state=present
+
+- name: Install swift-account
+  apt: name=swift-account state=present
+
+- name: Install xfsprogs
+  apt: name=xfsprogs state=present
+
+- name: Create partitions
+  filesystem: dev=/dev/{{ item }} fstype=xfs opts='-i size=512 -f'
+  with_items: partitions
+
+- name: Create mount destinations
+  file: dest=/srv/node/{{ item }} state=directory owner=swift group=swift
+  with_items: partitions
+
+- name: Add entries in /etc/fstab
+  lineinfile: dest=/etc/fstab line="/dev/{{ item }} /srv/node/{{ item }} xfs noatime,nodiratime,nobarrier,logbufs=8 0 0"
+  with_items: partitions
+  notify: remount
+
+- name: Create rsync conf
+  template: src=rsyncd.conf dest=/etc/rsync.conf
+  notify: restart rsync
+
+- name: Ensure rsync is enabled at startup
+  lineinfile: dest=/etc/default/rsync regexp=^RSYNC_ENABLE= line=RSYNC_ENABLE=true
+  notify: restart rsync
+
+- name: Create account-server.conf file
+  template: src=account-server.conf dest=/etc/swift/account-server.conf owner=swift group=swift
+  notify: restart swift
+
+- name: Create object-server.conf file
+  template: src=object-server.conf dest=/etc/swift/object-server.conf owner=swift group=swift
+  notify: restart swift
+
+- name: Create container-server.conf file
+  template: src=container-server.conf dest=/etc/swift/container-server.conf owner=swift group=swift
+  notify: restart swift

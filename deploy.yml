@@ -1,0 +1,5 @@
+---
+# We include rering first in order to have ring files in place
+# when we will try to start proxy/storage nodes for first time.
+- include: proxy.yml
+- include: storage.yml

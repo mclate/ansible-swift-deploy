@@ -1,0 +1,28 @@
+---
+# Common tasks for all nodes.
+# Here we ensure that all nodes have swift repo in it and all nodes are up2date with apt cache
+
+- name: update cache
+  apt: update_cache=yes
+
+- name: install python-software-properties packages
+  apt: name=python-software-properties state=present
+
+- name: install swift package
+  apt: name=swift state=present
+
+- name: install swift python client
+  apt: name=python-swiftclient state=present
+
+- name: create swift conf folder
+  shell: mkdir /etc/swift && chown swift:swift /etc/swift
+  args: 
+    creates: /etc/swift
+
+- name: create swift run folder
+  shell: mkdir /var/run/swift && chown swift:swift /var/run/swift
+  args: 
+    creates: /var/run/swift
+
+
+- include: swift_conf.yml

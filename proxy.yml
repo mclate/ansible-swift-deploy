@@ -1,0 +1,8 @@
+---
+- name: Install OpenStack Swift Proxy servers
+  sudo: yes
+  hosts: proxy
+  roles:
+      - common
+      - proxy
+      - rings

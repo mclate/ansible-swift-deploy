@@ -1,0 +1,15 @@
+---
+
+- name: install swift-proxy
+  apt: name=swift-proxy state=present
+
+- name: install memcached
+  apt: name=memcached state=present
+
+- name: add memcached template
+  template: src=memcached.conf dest=/etc/memcached.conf
+  notify: restart memcached
+
+- name: add proxy-server.conf file
+  template: src=proxy-server.conf dest=/etc/swift/proxy-server.conf
+  notify: restart swift

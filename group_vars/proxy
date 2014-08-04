@@ -1,0 +1,4 @@
+---
+statsd_host: <add statsd ip here>
+statsd_port: 8125
+statsd_default_sample_rate: 1

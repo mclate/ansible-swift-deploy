@@ -1,0 +1,6 @@
+---
+# Make sure every swift node has the same swift.conf file
+
+- name: copy swift.conf file
+  copy: src=swift.conf dest=/etc/swift/swift.conf owner=swift group=swift mode=0400 
+  notify: restart swift

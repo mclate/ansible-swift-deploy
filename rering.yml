@@ -1,0 +1,9 @@
+---
+- name: Redeploy ring files to all nodes
+  sudo: yes
+  gather_facts: no
+  hosts: 
+    - storage
+    - proxy
+  roles:
+      - rings

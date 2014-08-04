@@ -1,0 +1,20 @@
+[proxy-r1]
+r1p3 ansible_ssh_host=<add ip here>
+
+[proxy:children]
+proxy-r1
+
+[proxy:vars]
+ansible_ssh_user=ubuntu
+ansible_ssh_private_key_file=<path to private key>
+
+
+[storage-r1]
+r1s6 ansible_ssh_host=<add ip here>
+
+[storage:children]
+storage-r1
+
+[storage:vars]
+ansible_ssh_user=ubuntu
+ansible_ssh_private_key_file=<path to private key>

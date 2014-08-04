@@ -1,0 +1,8 @@
+---
+- name: Install OpenStack Swift Storage servers
+  sudo: yes
+  hosts: storage
+  roles:
+      - common
+      - storage
+      - rings

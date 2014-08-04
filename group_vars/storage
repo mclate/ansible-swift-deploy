@@ -1,0 +1,4 @@
+---
+partitions:
+  - xvdb
+  # Add more partitions if you need

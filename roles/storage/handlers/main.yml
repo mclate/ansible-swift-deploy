@@ -1,0 +1,12 @@
+---
+
+- name: remount
+  shell: mount -a
+
+- name: restart rsync
+  service: name=rsync state=restarted
+
+- name: restart swift
+  shell: chown -R swift:swift /etc/swift && swift-init restart all
+  register: command_result
+  failed_when: "'Error' in command_result.stdout"
